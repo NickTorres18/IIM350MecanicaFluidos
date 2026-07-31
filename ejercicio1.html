@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 1 - Ejemplos Resueltos</title>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+    </script>
+
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #021223; color: #ecf0f1; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 40px 20px; background-image: radial-gradient(rgba(0, 210, 255, 0.1) 20%, transparent 20%), radial-gradient(rgba(0, 210, 255, 0.05) 20%, transparent 20%); background-position: 0 0, 50px 50px; background-size: 100px 100px; background-attachment: fixed; }
+        .ejemplos-container { max-width: 850px; width: 100%; margin-top: 40px; }
+        h2 { font-size: 2.2em; color: #00d2ff; text-align: center; text-shadow: 0 0 15px rgba(0, 210, 255, 0.3); margin-bottom: 40px; }
+        .clase-section { background: rgba(4, 37, 72, 0.4); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .clase-section h3 { color: #00d2ff; border-bottom: 1px solid rgba(0, 210, 255, 0.2); padding-bottom: 10px; margin-top: 0; font-size: 1.5em; }
+        .ejercicio { background: rgba(0, 0, 0, 0.25); border-left: 4px solid #00d2ff; border-radius: 0 8px 8px 0; padding: 20px; margin-bottom: 20px; transition: transform 0.2s ease; }
+        .ejercicio:hover { background: rgba(0, 210, 255, 0.05); }
+        .ejercicio h4 { color: #b3bdc6; margin-top: 0; font-size: 1.1em; }
+        .ejercicio ul { padding-left: 20px; line-height: 1.6; }
+        .ejercicio li { margin-bottom: 10px; }
+        .img-ejercicio { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3); margin: 15px 0; display: block; }
+        .boton-volver { display: inline-flex; align-items: center; justify-content: center; background: #2c3e50; color: #fff; border: 2px solid #00d2ff; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 20px; transition: all 0.3s ease; }
+        .boton-volver:hover { background: #00d2ff; color: #021223; box-shadow: 0 0 15px rgba(0,210,255,0.4); }
+
+        /* Estilos del Menú Lateral Jerárquico Acordeón */
+        .menu-btn { position: fixed; top: 20px; left: 20px; background: rgba(4, 37, 72, 0.8); color: #00d2ff; border: 2px solid #00d2ff; padding: 10px 15px; border-radius: 8px; cursor: pointer; z-index: 1000; font-weight: bold; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        .menu-btn:hover { background: #00d2ff; color: #021223; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
+        .menu-lateral { height: 100%; width: 280px; position: fixed; z-index: 1001; top: 0; left: -280px; background-color: #010e1d; border-right: 2px solid #00d2ff; overflow-y: auto; overflow-x: hidden; transition: left 0.3s ease; padding-top: 50px; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+        .menu-lateral.abierto { left: 0; }
+        .menu-inicio { padding: 15px 20px; font-weight: bold; color: #00d2ff; font-size: 1.1em; border-bottom: 1px solid rgba(0, 210, 255, 0.1); display: block; text-decoration: none; transition: 0.2s; }
+        .menu-inicio:hover { background: rgba(0, 210, 255, 0.05); }
+        .menu-lateral .cerrar-btn { position: absolute; top: 10px; right: 15px; font-size: 30px; padding: 0; border: none; background: none; color: #e74c3c; cursor: pointer; }
+        .menu-lateral .cerrar-btn:hover { color: #ff7675; }
+        .menu-lateral::-webkit-scrollbar { width: 6px; }
+        .menu-lateral::-webkit-scrollbar-thumb { background: #00d2ff; border-radius: 10px; }
+        
+        /* Acordeón */
+        .menu-btn-acordeon { background-color: transparent; color: #ecf0f1; cursor: pointer; padding: 15px 20px; width: 100%; text-align: left; border: none; outline: none; transition: 0.3s; font-size: 1.1em; font-weight: bold; font-family: inherit; border-bottom: 1px solid rgba(0,210,255,0.1); display: block; }
+        .menu-btn-acordeon:hover, .menu-btn-acordeon.active { background-color: rgba(0, 210, 255, 0.05); color: #00d2ff; }
+        .sub-acordeon { padding-left: 30px; font-size: 1em; color: #b3bdc6; font-weight: normal; border-bottom: none; }
+        .sub-acordeon:hover, .sub-acordeon.active { border-left: 3px solid #00d2ff; padding-left: 27px; }
+        .menu-panel { padding: 0; background-color: #010a15; display: none; overflow: hidden; }
+        .menu-panel a { padding: 8px 15px 8px 45px; text-decoration: none; font-size: 0.95em; color: #8fa3b4; display: block; transition: 0.2s; border-left: 1px solid rgba(0,210,255,0.2); }
+        .menu-panel a:hover { color: #00d2ff; background-color: rgba(0,210,255,0.05); padding-left: 55px; border-left: 2px solid #00d2ff; }
+    </style>
+</head>
+<body>
+    
+    <div class="menu-btn" onclick="toggleMenu()">☰ Menú</div>
+    
+    <nav id="menu-lateral" class="menu-lateral">
+        <button class="cerrar-btn" onclick="toggleMenu()">&times;</button>
+        <a href="index.html" class="menu-inicio">🏠 Inicio (Panel)</a>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u1')">📘 Unidad 1</button>
+        <div id="u1" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-teo')">📖 Teoría</button>
+            <div id="u1-teo" class="menu-panel">
+                <a href="visor.html?unidad=1&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=1&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=1&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=1&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=1&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=1&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=1&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-eje')">📝 Ejemplos</button>
+            <div id="u1-eje" class="menu-panel">
+                <a href="ejercicio1.html#ejemplos-clase1">• Clase 1</a>
+                <a href="ejercicio1.html#ejemplos-clase2">• Clase 2</a>
+                <a href="ejercicio1.html#ejemplos-clase3">• Clase 3</a>
+                <a href="ejercicio1.html#ejemplos-clase4">• Clase 4</a>
+                <a href="ejercicio1.html#ejemplos-clase5">• Clase 5</a>
+                <a href="ejercicio1.html#ejemplos-clase6">• Clase 6</a>
+                <a href="ejercicio1.html#ejemplos-clase7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-pro')">⚙️ Problemas</button>
+           <div id="u1-pro" class="menu-panel">
+                <a href="ejercicios_propuestos1.html.html#clase1">• Clase 1</a>
+             <a href="ejercicios_propuestos1.html.html#clase2">• Clase 2</a>
+              <a href="ejercicios_propuestos1.html.html#clase3">• Clase 3</a>
+              <a href="ejercicios_propuestos1.html.html#clase4">• Clase 4</a>
+             <a href="ejercicios_propuestos1.html.html#clase5">• Clase 5</a>
+              <a href="ejercicios_propuestos1.html.html#clase6">• Clase 6</a>
+             <a href="ejercicios_propuestos1.html.html#clase7">• Clase 7</a>
+              </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u2')">📗 Unidad 2</button>
+        <div id="u2" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-teo')">📖 Teoría</button>
+            <div id="u2-teo" class="menu-panel">
+                <a href="visor.html?unidad=2&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=2&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=2&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=2&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=2&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=2&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=2&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-eje')">📝 Ejemplos</button>
+            <div id="u2-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-pro')">⚙️ Problemas</button>
+            <div id="u2-pro" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u3')">📕 Unidad 3</button>
+        <div id="u3" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-teo')">📖 Teoría</button>
+            <div id="u3-teo" class="menu-panel">
+                <a href="visor.html?unidad=3&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=3&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=3&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=3&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=3&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=3&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=3&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-eje')">📝 Ejemplos</button>
+            <div id="u3-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+           <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-pro')">⚙️ Problemas</button>
+<div id="u3-pro" class="menu-panel">
+    <a href="#">• Clase 1</a>
+    <a href="#">• Clase 2</a>
+    <a href="#">• Clase 3</a>
+    <a href="#">• Clase 4</a>
+    <a href="#">• Clase 5</a>
+    <a href="#">• Clase 6</a>
+    <a href="#">• Clase 7</a>
+</div>
+        </div>
+    </nav>
+
+    <section id="unidad1-ejemplos" class="ejemplos-container">
+        <h2>Unidad 1: Ejercicios Resueltos</h2>
+
+        <article id="ejemplos-clase1" class="clase-section">
+            <h3>Clase 1: Principios Fundamentales</h3>
+            <div class="ejercicio">
+                <h4>Ejemplo 1: Propiedades básicas de un aceite</h4>
+                <p><strong>Enunciado:</strong> Un aceite ocupa un volumen de $2.5 m^3$ y tiene una masa de 2,200 kg. Determinar: (a) su densidad $\rho$, (b) su peso específico $\gamma$, (c) su gravedad específica SG, y (d) su peso total W.</p>
+                <ul>
+                    <li><strong>Paso 1: Densidad:</strong><br> $\rho = \frac{m}{V} = \frac{2,200 kg}{2.5 m^3} = 880 kg/m^3$</li>
+                    <li><strong>Paso 2: Peso específico:</strong><br> $\gamma = \rho g = 880 kg/m^3 \times 9.81 m/s^2 = 8,633 N/m^3 = 8.63 kN/m^3$</li>
+                    <li><strong>Paso 3: Gravedad específica:</strong><br> $SG = \frac{\rho}{\rho_{agua}} = \frac{880}{1000} = 0.880$</li>
+                    <li><strong>Paso 4: Peso total:</strong><br> $W = m g = 2,200 \times 9.81 = 21,582 N \approx 21.6 kN$</li>
+                </ul>
+            </div>
+            <div class="ejercicio">
+                <h4>Ejemplo 2: Esfuerzo cortante entre placas paralelas</h4>
+                <p><strong>Enunciado:</strong> Dos placas horizontales paralelas están separadas $h = 4 mm$. Entre ellas hay aceite con viscosidad dinámica $\mu = 0.38 Pa\cdot s$. La placa superior se mueve a $U = 1.2 m/s$ y la inferior está fija. Calcular: (a) el esfuerzo cortante en el fluido, (b) la fuerza F necesaria para mover la placa superior si tiene área $A = 0.5 m^2$, (c) la potencia consumida $\dot{W}$.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $\frac{du}{dy} = \frac{1.2 m/s}{4 \times 10^{-3} m} = 300 s^{-1}$</li>
+                    <li><strong>Paso 2:</strong> $\tau = \mu \frac{du}{dy} = 0.38 \times 300 = 114 Pa$</li>
+                    <li><strong>Paso 3:</strong> $F = \tau \cdot A = 114 \times 0.5 = 57 N$</li>
+                    <li><strong>Paso 4:</strong> $\dot{W} = F \cdot U = 57 \times 1.2 = 68.4 W$</li>
+                </ul>
+            </div>
+        </article>
+
+        <article id="ejemplos-clase2" class="clase-section">
+            <h3>Clase 2: Concepto de Presión y Manometría</h3>
+            <div class="ejercicio">
+                <h4>Ejemplo 1: Manómetro de tubo en U simple</h4>
+                <p><strong>Enunciado:</strong> Un manómetro de mercurio ($\rho_m = 13,550 kg/m^3$) está conectado a una tubería que conduce agua ($\rho_w = 998 kg/m^3$). La columna de mercurio en el lado abierto sube $h_2 = 18 cm$ respecto a la interfaz, y la columna de agua sobre la interfaz del lado de la tubería es $h_1 = 25 cm$. La presión atmosférica es 101.3 kPa. Determinar la presión absoluta y la presión manométrica en el punto A.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $P_A + \rho_w g h_1 - \rho_m g h_2 = P_{atm}$</li>
+                    <li><strong>Paso 2:</strong> $P_A = 101,300 + 13,550 \times 9.81 \times 0.18 - 998 \times 9.81 \times 0.25 = 122,768 Pa$ (absoluta)</li>
+                    <li><strong>Paso 3:</strong> $P_{A,man} = 122,768 - 101,300 = 21,468 Pa$</li>
+                </ul>
+            </div>
+            <div class="ejercicio">
+                <h4>Ejemplo 2: Sistema con tres fluidos</h4>
+                <p><strong>Enunciado:</strong> En el sistema de la figura, los fluidos son: agua ($\rho_w = 998 kg/m^3$), aceite ($\rho_o = 860 kg/m^3$) y mercurio ($\rho_{Hg} = 13,550 kg/m^3$). Las alturas medidas son: $h_1 = 30 cm$ (agua), $h_2 = 15 cm$ (aceite), $h_3 = 20 cm$ (mercurio). El extremo derecho está abierto a la atmósfera. Calcular $P_A$.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $P_A = -\rho_w g h_1 + \rho_o g h_2 + \rho_{Hg} g h_3$</li>
+                    <li><strong>Paso 2:</strong> $P_A = -2,936 + 1,267 + 26,599 = 24,930 Pa$ (manométrica)</li>
+                </ul>
+            </div>
+        </article>
+
+        <article id="ejemplos-clase3" class="clase-section">
+            <h3>Clase 3: Ecuación Fundamental de la Estática</h3>
+            <div class="ejercicio">
+                <h4>Ejemplo 1: Depósito con dos capas de fluido</h4>
+                <p><strong>Enunciado:</strong> Un depósito tiene en la parte superior aceite ($\rho_o = 860 kg/m^3$, altura $h_1 = 0.8 m$) y debajo agua ($\rho_w = 998 kg/m^3$, altura $h_2 = 1.5 m$). La superficie libre está a $P_0 = P_{atm} = 101.3 kPa$. Calcular: (a) la presión en la interfaz aceite-agua, (b) la presión en el fondo del depósito.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $P_{int} = P_0 + \rho_o g h_1 = 101,300 + 860 \times 9.81 \times 0.8 = 108,050 Pa$</li>
+                    <li><strong>Paso 2:</strong> $P_{fondo} = P_{int} + \rho_w g h_2 = 108,050 + 998 \times 9.81 \times 1.5 = 122,731 Pa$</li>
+                </ul>
+            </div>
+            <div class="ejercicio">
+                <h4>Ejemplo 2: Prensa hidráulica</h4>
+                <p><strong>Enunciado:</strong> Una prensa hidráulica tiene un pistón de entrada con diámetro $D_1 = 3 cm$ y un pistón de salida con diámetro $D_2 = 20 cm$. El fluido es aceite hidráulico ($\rho = 870 kg/m^3$). Se aplica una fuerza $F_1 = 150 N$ sobre el pistón pequeño. Los pistones están a la misma altura. Calcular: (a) la fuerza sobre el pistón grande $F_2$.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $P = \frac{F_1}{A_1} = \frac{150}{\pi(0.015)^2} = 212,207 Pa$</li>
+                    <li><strong>Paso 2:</strong> $F_2 = P \times A_2 = 212,207 \times \pi(0.1)^2 = 6,667 N$</li>
+                </ul>
+            </div>
+        </article>
+
+        <article id="ejemplos-clase4" class="clase-section">
+            <h3>Clase 4: Fuerzas sobre Superficies Planas Sumergidas</h3>
+            <div class="ejercicio">
+                <h4>Ejemplo 1: Compuerta rectangular vertical</h4>
+                <p><strong>Enunciado:</strong> Una compuerta rectangular de ancho $b = 2 m$ y altura $H = 1.5 m$ está montada en la pared de un depósito. Su borde superior está a $d = 1 m$ bajo la superficie libre del agua ($\rho = 998 kg/m^3$). Calcular: (a) la fuerza resultante $F_R$, (b) la ubicación del centro de presión $h_{cp}$.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $\bar{h} = 1 + \frac{1.5}{2} = 1.75 m$</li>
+                    <li><strong>Paso 2:</strong> $F_R = 998 \times 9.81 \times 1.75 \times (2 \times 1.5) = 51,430 N$</li>
+                    <li><strong>Paso 3:</strong> $I_{xc} = \frac{2(1.5)^3}{12} = 0.5625 m^4$</li>
+                    <li><strong>Paso 4:</strong> $y_{cp} = 1.75 + \frac{0.5625}{1.75 \times 3} = 1.857 m$</li>
+                </ul>
+            </div>
+            <div class="ejercicio">
+                <h4>Ejemplo 2: Compuerta rectangular inclinada con bisagra</h4>
+                <p><strong>Enunciado:</strong> Compuerta rectangular ($b = 1.5 m$, $H = 2 m$) inclinada $\theta = 60^\circ$. Borde superior a 0.5 m bajo la superficie. Bisagra en el borde superior y cable en el inferior. Fluido es agua. Calcular la tensión T en el cable.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $\bar{h} = 0.5 + \frac{2 \sin 60^\circ}{2} = 1.366 m$</li>
+                    <li><strong>Paso 2:</strong> $F_R = 998 \times 9.81 \times 1.366 \times 3 = 40,166 N$</li>
+                    <li><strong>Paso 3:</strong> $\xi_{cp} = \frac{1.366}{\sin 60^\circ} + \frac{1.0}{1.577 \times 3} = 1.788 m$</li>
+                    <li><strong>Paso 4:</strong> Equilibrio: $T \times 2 = 40,166 \times (1.788 - 0.577) \Rightarrow T = 24,320 N$</li>
+                </ul>
+            </div>
+        </article>
+
+        <article id="ejemplos-clase5" class="clase-section">
+            <h3>Clase 5: Fuerzas sobre Superficies Curvas Sumergidas</h3>
+            <div class="ejercicio">
+                <h4>Ejemplo 1: Compuerta semicilíndrica sumergida</h4>
+                <p><strong>Enunciado:</strong> Compuerta semicilíndrica de radio $R = 1.2 m$ y longitud $L = 3 m$. El borde superior está a $h_0 = 2 m$ bajo el agua. Calcular $F_H, F_V$ y $F_R$.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $\bar{h}_v = 2 + 1.2 = 3.2 m$. $F_H = 998 \times 9.81 \times 3.2 \times (2.4 \times 3) = 225,866 N$</li>
+                    <li><strong>Paso 2:</strong> $V = 2.4 \times 2 \times 3 + \frac{\pi(1.2)^2}{2} \times 3 = 21.186 m^3$. $F_V = 998 \times 9.81 \times 21.186 = 207,399 N$</li>
+                    <li><strong>Paso 3:</strong> $F_R = \sqrt{225.9^2 + 207.4^2} \approx 306.7 kN$</li>
+                </ul>
+            </div>
+            <div class="ejercicio">
+                <h4>Ejemplo 2: Compuerta parabólica: integración directa</h4>
+                <p><strong>Enunciado:</strong> Compuerta parabólica $z = x^2$ entre $x=0$ y $x=1.5 m$. $L = 2.5 m$. Superficie libre a $H = 3 m$ sobre el fondo. Calcular $F_V, F_H$ y $F_R$.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $F_V = 998 \times 9.81 \times 2.5 \times \int_0^{1.5} (3 - x^2) dx = 82,676 N$</li>
+                    <li><strong>Paso 2:</strong> $F_H = 998 \times 9.81 \times 1.875 \times (2.25 \times 2.5) = 103,319 N$</li>
+                    <li><strong>Paso 3:</strong> $F_R = \sqrt{82.7^2 + 103.3^2} = 132.3 kN$</li>
+                </ul>
+            </div>
+        </article>
+
+        <article id="ejemplos-clase6" class="clase-section">
+            <h3>Clase 6: Flotabilidad y Estabilidad</h3>
+            <div class="ejercicio">
+                <h4>Ejemplo 1: Peso aparente de una esfera metálica sumergida</h4>
+                <p><strong>Enunciado:</strong> Esfera de acero ($\rho_s = 7,850 kg/m^3$), radio $R = 0.15 m$, sumergida en agua. Calcular: (a) empuje $F_B$, (b) peso real W, (c) peso aparente.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $V = \frac{4}{3} \pi (0.15)^3 = 0.01414 m^3$</li>
+                    <li><strong>Paso 2:</strong> $F_B = 998 \times 9.81 \times 0.01414 = 138.5 N$</li>
+                    <li><strong>Paso 3:</strong> $W = 7,850 \times 9.81 \times 0.01414 = 1,088.5 N$</li>
+                    <li><strong>Paso 4:</strong> $W_{ap} = 1,088.5 - 138.5 = 950.0 N$</li>
+                </ul>
+            </div>
+            <div class="ejercicio">
+                <h4>Ejemplo 2: Estabilidad de un casco rectangular</h4>
+                <p><strong>Enunciado:</strong> Casco rectangular ($b = 6 m$, $L = 20 m$, calado $d = 1.2 m$). $z_G = 1.5 m$ sobre la quilla. ¿Es estable?</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $z_B = 1.2/2 = 0.6 m \Rightarrow BG = 1.5 - 0.6 = 0.9 m$</li>
+                    <li><strong>Paso 2:</strong> $I_W = \frac{20 \times 6^3}{12} = 360 m^4$</li>
+                    <li><strong>Paso 3:</strong> $V_s = 6 \times 1.2 \times 20 = 144 m^3 \Rightarrow BM = 360/144 = 2.5 m$</li>
+                    <li><strong>Paso 4:</strong> $GM = 2.5 - 0.9 = 1.6 m > 0$ (ESTABLE).</li>
+                </ul>
+            </div>
+        </article>
+
+        <article id="ejemplos-clase7" class="clase-section">
+            <h3>Clase 7: Fuerzas en Sistemas Uniformemente Acelerados</h3>
+            <div class="ejercicio">
+                <h4>Ejemplo 1: Camión cisterna acelerando horizontalmente</h4>
+                <p><strong>Enunciado:</strong> Camión ($L = 6 m$, combustible $\rho = 720 kg/m^3$, $h_0 = 1.2 m$) acelera con $a_x = 3 m/s^2$. Calcular ángulo $\theta$, $\Delta h$ y presiones en el fondo.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $\tan \theta = 3 / 9.81 = 0.306 \Rightarrow \theta = 17.0^\circ$</li>
+                    <li><strong>Paso 2:</strong> $\Delta h = 0.306 \times 6 = 1.836 m$</li>
+                    <li><strong>Paso 3:</strong> $h_{trasero} = 1.2 + 0.918 = 2.118 m$ ; $h_{delantero} = 1.2 - 0.918 = 0.282 m$</li>
+                    <li><strong>Paso 4:</strong> $P_{trasero} = 720 \times 9.81 \times 2.118 = 14,960 Pa$</li>
+                </ul>
+            </div>
+            <div class="ejercicio">
+                <h4>Ejemplo 2: Centrifugadora: perfil parabólico</h4>
+                <p><strong>Enunciado:</strong> Centrifugadora ($R = 0.25 m$, $n = 1,200 rpm$, agua). Calcular $\Delta z$ entre borde y centro.</p>
+                <ul>
+                    <li><strong>Paso 1:</strong> $\omega = 2\pi \times 1200 / 60 = 125.66 rad/s$</li>
+                    <li><strong>Paso 2:</strong> $\Delta z = \frac{125.66^2 \times 0.25^2}{2 \times 9.81} = 50.3 m$</li>
+                </ul>
+            </div>
+        </article>
+        <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <a href="javascript:history.back()" class="boton-volver" style="padding: 6px 12px; font-size: 12px; min-width: auto; margin: 0; text-align: center; line-height: 1.4; display: inline-block;">
+        ⬅ Volver a la <br> página anterior
+    </a>
+     </div>
+
+        <div style="text-align: center;">
+            <a href="unidad1.html" class="boton-volver">← Volver al Menú de Unidad 1</a>
+        </div>
+    </section>
+
+    <script>
+        function toggleMenu() { document.getElementById("menu-lateral").classList.toggle("abierto"); }
+        function toggleAccordion(id) {
+            var panel = document.getElementById(id);
+            if (panel.style.display === "block") { panel.style.display = "none"; } 
+            else { panel.style.display = "block"; }
+        }
+    </script>
+</body>
+</html>

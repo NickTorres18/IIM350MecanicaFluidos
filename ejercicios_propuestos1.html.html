@@ -1,0 +1,599 @@
+<<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 1 - Guía de Ejercicios Propuestos</title>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+    </script>
+
+    <style>
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #021223; color: #ecf0f1; margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            background-image: radial-gradient(rgba(0, 210, 255, 0.1) 20%, transparent 20%), radial-gradient(rgba(0, 210, 255, 0.05) 20%, transparent 20%);
+            background-position: 0 0, 50px 50px; background-size: 100px 100px;
+        }
+        .ejercicios-container {
+            width: 100%; max-width: 900px; background: rgba(0, 210, 255, 0.05);
+            border: 2px solid rgba(0, 210, 255, 0.4); border-radius: 15px; padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.15); box-sizing: border-box;
+        }
+        h2 { text-align: center; color: #00d2ff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); border-bottom: 2px solid rgba(0, 210, 255, 0.3); padding-bottom: 15px; margin-bottom: 40px; font-size: 2em; }
+        .clase-section { margin-bottom: 50px; }
+        .clase-section h3 { color: #ecf0f1; background: #042548; padding: 12px 20px; border-left: 5px solid #00d2ff; border-radius: 5px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .ejercicio { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 25px; margin-bottom: 25px; transition: all 0.3s ease; }
+        .ejercicio:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(0, 210, 255, 0.4); box-shadow: 0 0 20px rgba(0, 210, 255, 0.1); }
+        .ejercicio h4 { color: #00d2ff; margin-top: 0; margin-bottom: 15px; font-size: 1.2em; }
+        .ejercicio p { line-height: 1.6; margin-bottom: 15px; }
+        .respuesta { margin-top: 20px; font-weight: bold; color: #2ecc71; background: rgba(46, 204, 113, 0.1); padding: 12px 15px; border-radius: 6px; border-left: 4px solid #2ecc71; display: inline-block; }
+        .hint { margin-top: 15px; font-style: italic; color: #f39c12; background: rgba(243, 156, 18, 0.1); padding: 10px 15px; border-radius: 6px; border-left: 4px solid #f39c12; }
+        .imagen-placeholder { width: 100%; max-width: 450px; height: 220px; background: rgba(0, 15, 30, 0.5); border: 2px dashed rgba(0, 210, 255, 0.4); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(0, 210, 255, 0.7); margin: 20px auto; text-align: center; font-size: 0.95em; transition: border-color 0.3s; }
+        .imagen-placeholder:hover { border-color: #00d2ff; background: rgba(0, 210, 255, 0.05); }
+        .boton-volver { display: inline-flex; align-items: center; justify-content: center; background: #042548; color: #00d2ff; border: 2px solid #00d2ff; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: all 0.3s; margin-bottom: 30px; align-self: flex-start; margin-left: auto; margin-right: auto; }
+        .boton-volver:hover { background: #00d2ff; color: #021223; box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+        @media (max-width: 600px) { .ejercicios-container { padding: 15px; } .ejercicio { padding: 15px; } }
+
+        /* Estilos del Menú Lateral */
+         .menu-btn { position: fixed; top: 20px; left: 20px; background: rgba(4, 37, 72, 0.8); color: #00d2ff; border: 2px solid #00d2ff; padding: 10px 15px; border-radius: 8px; cursor: pointer; z-index: 1000; font-weight: bold; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        .menu-btn:hover { background: #00d2ff; color: #021223; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
+        .menu-lateral { height: 100%; width: 280px; position: fixed; z-index: 1001; top: 0; left: -280px; background-color: #010e1d; border-right: 2px solid #00d2ff; overflow-y: auto; overflow-x: hidden; transition: left 0.3s ease; padding-top: 50px; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+        .menu-lateral.abierto { left: 0; }
+        .menu-inicio { padding: 15px 20px; font-weight: bold; color: #00d2ff; font-size: 1.1em; border-bottom: 1px solid rgba(0, 210, 255, 0.1); display: block; text-decoration: none; transition: 0.2s; }
+        .menu-inicio:hover { background: rgba(0, 210, 255, 0.05); }
+        .menu-lateral .cerrar-btn { position: absolute; top: 10px; right: 15px; font-size: 30px; padding: 0; border: none; background: none; color: #e74c3c; cursor: pointer; }
+        .menu-lateral .cerrar-btn:hover { color: #ff7675; }
+        .menu-lateral::-webkit-scrollbar { width: 6px; }
+        .menu-lateral::-webkit-scrollbar-thumb { background: #00d2ff; border-radius: 10px; }
+        
+        /* Acordeón */
+        .menu-btn-acordeon { background-color: transparent; color: #ecf0f1; cursor: pointer; padding: 15px 20px; width: 100%; text-align: left; border: none; outline: none; transition: 0.3s; font-size: 1.1em; font-weight: bold; font-family: inherit; border-bottom: 1px solid rgba(0,210,255,0.1); display: block; }
+        .menu-btn-acordeon:hover, .menu-btn-acordeon.active { background-color: rgba(0, 210, 255, 0.05); color: #00d2ff; }
+        .sub-acordeon { padding-left: 30px; font-size: 1em; color: #b3bdc6; font-weight: normal; border-bottom: none; }
+        .sub-acordeon:hover, .sub-acordeon.active { border-left: 3px solid #00d2ff; padding-left: 27px; }
+        .menu-panel { padding: 0; background-color: #010a15; display: none; overflow: hidden; }
+        .menu-panel a { padding: 8px 15px 8px 45px; text-decoration: none; font-size: 0.95em; color: #8fa3b4; display: block; transition: 0.2s; border-left: 1px solid rgba(0,210,255,0.2); }
+        .menu-panel a:hover { color: #00d2ff; background-color: rgba(0,210,255,0.05); padding-left: 55px; border-left: 2px solid #00d2ff; }
+    </style>
+</head>
+<body>
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <a href="javascript:history.back()" class="boton-volver" style="padding: 6px 12px; font-size: 12px; min-width: auto; margin: 0; text-align: center; line-height: 1.4; display: inline-block;">
+        ⬅ Volver a la <br> página anterior
+    </a>
+     </div>
+
+    <div class="menu-btn" onclick="toggleMenu()">☰ Menú</div>
+    <nav id="menu-lateral" class="menu-lateral">
+        <button class="cerrar-btn" onclick="toggleMenu()">&times;</button>
+        <a href="index.html" class="menu-inicio">🏠 Inicio (Panel)</a>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u1')">📘 Unidad 1</button>
+        <div id="u1" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-teo')">📖 Teoría</button>
+            <div id="u1-teo" class="menu-panel">
+                <a href="visor.html?unidad=1&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=1&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=1&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=1&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=1&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=1&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=1&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-eje')">📝 Ejemplos</button>
+            <div id="u1-eje" class="menu-panel">
+                <a href="ejercicio1.html#ejemplos-clase1">• Clase 1</a>
+                <a href="ejercicio1.html#ejemplos-clase2">• Clase 2</a>
+                <a href="ejercicio1.html#ejemplos-clase3">• Clase 3</a>
+                <a href="ejercicio1.html#ejemplos-clase4">• Clase 4</a>
+                <a href="ejercicio1.html#ejemplos-clase5">• Clase 5</a>
+                <a href="ejercicio1.html#ejemplos-clase6">• Clase 6</a>
+                <a href="ejercicio1.html#ejemplos-clase7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-pro')">⚙️ Problemas</button>
+           <div id="u1-pro" class="menu-panel">
+                <a href="ejercicios_propuestos1.html.html#clase1">• Clase 1</a>
+             <a href="ejercicios_propuestos1.html.html#clase2">• Clase 2</a>
+              <a href="ejercicios_propuestos1.html.html#clase3">• Clase 3</a>
+              <a href="ejercicios_propuestos1.html.html#clase4">• Clase 4</a>
+             <a href="ejercicios_propuestos1.html.html#clase5">• Clase 5</a>
+              <a href="ejercicios_propuestos1.html.html#clase6">• Clase 6</a>
+             <a href="ejercicios_propuestos1.html.html#clase7">• Clase 7</a>
+              </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u2')">📗 Unidad 2</button>
+        <div id="u2" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-teo')">📖 Teoría</button>
+            <div id="u2-teo" class="menu-panel">
+                <a href="visor.html?unidad=2&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=2&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=2&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=2&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=2&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=2&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=2&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-eje')">📝 Ejemplos</button>
+            <div id="u2-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-pro')">⚙️ Problemas</button>
+            <div id="u2-pro" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u3')">📕 Unidad 3</button>
+        <div id="u3" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-teo')">📖 Teoría</button>
+            <div id="u3-teo" class="menu-panel">
+                <a href="visor.html?unidad=3&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=3&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=3&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=3&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=3&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=3&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=3&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-eje')">📝 Ejemplos</button>
+            <div id="u3-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+           <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-pro')">⚙️ Problemas</button>
+<div id="u3-pro" class="menu-panel">
+    <a href="#">• Clase 1</a>
+    <a href="#">• Clase 2</a>
+    <a href="#">• Clase 3</a>
+    <a href="#">• Clase 4</a>
+    <a href="#">• Clase 5</a>
+    <a href="#">• Clase 6</a>
+    <a href="#">• Clase 7</a>
+</div>
+        </div>
+
+    </nav>
+
+    <div class="ejercicios-container" style="margin-top: 50px;">
+        
+        <h2>Guía de Ejercicios Propuestos</h2>
+
+        <section class="clase-section" id="clase1">
+            <h3>Clase 1: Principios Fundamentales</h3>
+            <div class="ejercicio">
+        
+                <h4>Problema 1</h4>
+                <p>Un fluido newtoniano se encuentra entre dos placas paralelas separadas 3 mm. La placa superior se mueve a $0.8~m/s$. Si el esfuerzo cortante medido es $\tau=200~Pa$, determine la viscosidad dinámica $\mu$.</p>
+                <div class="respuesta">Resp.: $\mu = 0.75~Pa \cdot s$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 2</h4>
+                <p>El perfil de velocidades en un flujo es $u(y) = 4y - y^2$ (con $u$ en $m/s$ e $y$ en $m$). Si $\mu = 0.001~Pa \cdot s$, calcule el esfuerzo cortante a $y=0$ y a $y=2m$.</p>
+                <div class="respuesta">Resp.: $\tau(y=0) = 0.004~Pa$ ; $\tau(y=2) = 0$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 3</h4>
+                <p>Un cilindro de radio $R = 50~mm$ y longitud $L = 200~mm$ gira a $n = 1200~rpm$ dentro de un tubo concéntrico con separación radial $\delta = 1~mm$. El fluido tiene $\mu = 0.02~Pa \cdot s$. Calcule el torque $T$ necesario para mantener el giro.</p>
+                <div class="hint">Hint: $U = \omega R$ , $\tau = \mu U / \delta$ , $T = \tau \cdot A \cdot R$</div>
+                <div class="respuesta">Resp.: $T \approx 1.58~N \cdot m$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 4</h4>
+                <p>Demuestre que la velocidad del sonido en un gas ideal es $c = \sqrt{kRT}$, donde $k = c_p/c_v$ es la razón de calores específicos.</p>
+                <div class="hint">Hint: Para un proceso isoentrópico, $P = C\rho^k$, calcule $dP/d\rho$.</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 5</h4>
+                <p>Considere un flujo de fluido entre dos placas paralelas que están separadas 5 cm, como se muestra en la figura. La distribución de velocidad para el flujo está dada por u(y) = 120(0.05y - y2) m/s donde y está en metros. El fluido es agua a 10 C. Calcule la magnitud del esfuerzo cortante que actúa sobre cada una de las placas.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC1E5.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 6</h4>
+                <p>Considere el flujo de un fluido con viscosidad p por un tubo circular. El perfil de velocidad en el tubo se expresa como u(r) = Umáx(1 - r"/R"), en donde umáx es la velocidad máxima de flujo, la cual se tiene en la línea central; r es la distancia radial desde la línea central y u(r) es la velocidad de flujo en cualquier posición r. Desarrolle una relación para la fuerza de arrastre ejercida sobre la pared del tubo por el fluido en la dirección del flujo, por unidad de longitud del tubo.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC1E6.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+        </section>
+
+     <section class="clase-section" id="clase2">
+         <h3>Clase 2: Concepto de Presión y Manometría</h3>
+
+         <div class="ejercicio">
+                <h4>Problema 1</h4>
+                <p>Se mide una presión de vacío de $P_{vac} = 30~kPa$. Calcule la presión absoluta en ese caso asumiendo una presión atmosférica estándar.</p>
+                <div class="respuesta">Resp.: $P_{abs} = 70~kPa$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 2</h4>
+                <p>Una columna de aceite ($SG = 0.85$) tiene 3.2 m de altura. Calcule la presión en la base en Pa y en mmHg.</p>
+                <div class="respuesta">Resp.: 26,669 Pa ; 200 mmHg</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 3</h4>
+                <p>En un manómetro en U con aceite ($\rho = 780~kg/m^3$) como fluido manométrico, se lee una diferencia de alturas de $h = 40~cm$. El lado izquierdo está conectado a un recipiente de gas. Calcule la presión manométrica del gas.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC2E3.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="respuesta">Resp.: 3,062 Pa $\approx 3.06~kPa$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 4</h4>
+                <p>Un barómetro de agua (en vez de mercurio) mide la presión atmosférica. A $20^\circ C$ con $\rho_w = 998~kg/m^3$, ¿qué altura de agua corresponde a $P_{atm} = 101.3~kPa$? Compare con el barómetro de mercurio.</p>
+                <div class="respuesta">Resp.: $H_{agua} = 10.35~m$ vs $H_{Hg} = 0.760~m$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 5 (Desafío)</h4>
+                <p>En el sistema manométrico siguiente: un depósito de aceite ($\rho_o = 850~kg/m^3$) está conectado al punto A de una tubería de agua. Hay una columna de aceite de 50 cm y luego mercurio cuya columna diferencial es $\Delta h = 8~cm$. Calcule la diferencia de presiones.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC2E5.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 6</h4>
+                <p>¿Cuál es la presión en el tubo que transporta agua que se ilustra en la figura?</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC2E6.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 7</h4>
+                <p>Circulan agua y aceite en unas tuberías horizontales. Un manometro de doble tubo en U está conectado entre las tuberías, como se muestra en la figura. Calcule la diferencia de presión entre el tubo de agua y el de aceite.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC2E7.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+        </section>
+
+        <section class="clase-section" id="clase3">
+            <h3>Clase 3: Ecuación Fundamental de la Estática</h3>
+
+            <div class="ejercicio">
+                <h4>Problema 1</h4>
+                <p>Un estanque de agua tiene 4 m de profundidad. Calcule la presión en el fondo en Pa, kPa, atm y mmHg. Tome $\rho_w = 998~kg/m^3$.</p>
+                <div class="respuesta">Resp.: 39,141 Pa ; 39.14 kPa ; 0.386 atm ; 293.5 mmHg</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 2</h4>
+                <p>En un depósito con tres capas: mercurio ($h_1 = 0.1~m$), agua ($h_2 = 0.5~m$) y aceite ($SG = 0.82$ , $h_3 = 0.3~m$). La superficie libre está abierta a la atmósfera. Calcule la presión total en el fondo.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC3E2.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="respuesta">Resp.: $P = P_{atm} + 116,900~Pa \approx P_{atm} + 117~kPa$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 3</h4>
+                <p>Una prensa hidráulica debe levantar un objeto de 8,000 kg. Calcule las variables de diseño necesarias si la fuerza de entrada es conocida.</p>
+               <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC3E3.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 4</h4>
+                <p>La mitad inferior de un recipiente cilíndrico de 10 m de alto está llena con agua (ρ =1000 kg/m3) y la superior con aceite que tiene una gravedad específica de 0.85. Determine la diferencia de presión entre la superficie superior y el fondo del cilindro.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC3E4.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 5</h4>
+                <p>Se puede usar el barómetro básico como un aparato para medir la altitud en los aviones. El control de tierra in forma de una lectura barométrica de 753 mm Hg, en tanto que la lectura del piloto es de 690 mm Hg. Estime la altitud del avión desde el nivel del suelo si la densidad promedio del aire es de 1.20 kg/m3.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC3E5.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+        </section>
+
+        <section class="clase-section" id="clase4">
+            <h3>Clase 4: Fuerzas sobre Superficies Planas Sumergidas</h3>
+
+            <div class="ejercicio">
+                <h4>Problema 1</h4>
+                <p>Calcule la fuerza resultante $F_R$ y el centro de presión $h_{cp}$ sobre una superficie vertical sumergida.</p>
+                <div class="respuesta">Resp.: $F_R = 19,995~N$ ; $h_{cp} = 1.553~m$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 2</h4>
+                <p>Una pared vertical triangular (base $b = 3m$, altura $H = 4m$, vértice hacia arriba) contiene agua hasta la cima ($\overline{h} = 2H/3$). Calcule $F_R$ y $h_{cp}$.</p>
+                <div class="hint">Use: $I_{xc} = bH^3/36$</div>
+                <div class="respuesta">Resp.: $F_R = 157,104~N$ ; $h_{cp} = 3.0~m$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 3</h4>
+                <p>Una compuerta rectangular ($b = 0.8~m$ , $H = 1.2m$) está inclinada $45^\circ$. Su borde superior a 0.4 m de profundidad. Hay una bisagra en el borde superior. Calcule la fuerza $F$ en el borde inferior necesaria para mantener la compuerta cerrada (perpendicular a la compuerta).</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC4E3.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="respuesta">Resp.: $F \approx 9,400~N$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 4 (Industria)</h4>
+                <p>Un tanque de almacenamiento cilíndrico tiene una ventana de inspección rectangular ($0.4~m \times 0.3~m$) en la pared lateral. El centro de la ventana está a 2.5m bajo la superficie libre. Calcule la fuerza sobre los 4 pernos de sujeción si $F_R$ se distribuye equitativamente.</p>
+                <div class="respuesta">Resp.: $F_R = 2,943~N$ ; fuerza por perno $= 736~N$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 5</h4>
+                <p>La compuerta rectangular mostrada en la figura es de 3 m de ancho. La fuerza P necesaria para mantener la compuerta en la posición mostrada está más cercana a:
+               (A) 24.5 kN (B) 32.7 kN
+                (C) 98 kN (D) 147 kN
+                </p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC4E5.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 6</h4>
+                <p>Encuentre la fuerza P necesaria para mantener la compuerta rectangular de 3 m de ancho como se muestra en la figura si:
+                 (a) l=2m
+                 (b) l=4m
+                 (c) l=5m
+                  </p>
+                  <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC4E6.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+
+
+        </section>
+
+        <section class="clase-section" id="clase5">
+            <h3>Clase 5: Fuerzas sobre Superficies Curvas Sumergidas</h3>
+
+            <div class="ejercicio">
+                <h4>Problema 1</h4>
+                <p>Una esfera hueca ($R = 0.5~m$) está anclada en el fondo de un estanque con agua hasta $H = 3m$. El hemisferio superior tiene la curva mirando hacia el fluido. Calcule $F_H$, $F_V$ y $F_R$ sobre el hemisferio superior.</p>
+                <div class="respuesta">Resp.: $F_H = 0$ (por simetría) , $F_V = \rho g(\pi R^2H - \frac{2\pi R^3}{3}) \cdot L$ (adaptar según geometría)</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 2</h4>
+                <p>Una compuerta de cuarto de círculo ($R = 1.5~m$ , $L = 5~m$) tiene su vértice en la base; el lado plano vertical está contra la pared. La superficie libre está a $h_0 = 1~m$ sobre el borde superior del arco. Calcule $F_H$, $F_V$ y $F_R$.</p>
+               <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC5E2.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="respuesta">Resp.: $\overline{h}_v = h_0 + R/2 = 1.75~m$</div>
+            </div>
+             <div class="ejercicio">
+                <h4>Problema 3</h4>
+                <p>Encuentre la fuerza P necesaria para apenas abrir la compuerta mostrada en la figura si:
+                   (a) H = 6 m, R = 2 m, y la compuerta es de 4 m de ancho.
+                    (b) H = 20 ft, R = 6 ft, y la compuerta es de 12 ft de ancho
+                 </p>
+                 <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC5E3.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+             <div class="ejercicio">
+                <h4>Problema 4</h4>
+                <p>Encuentre la fuerza P si la compuerta parabólica mostrada en la figura mide:
+                  (a) 2 m de ancho y H = 2 m
+                  (b) 4 ft de ancho y H = 8 ft
+                 </p>
+                 <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC5E4.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+        </section>
+
+        <section class="clase-section" id="clase6">
+            <h3>Clase 6: Flotabilidad y Estabilidad</h3>
+
+            <div class="ejercicio">
+                <h4>Problema 1</h4>
+                <p>Una esfera hueca de aluminio ($\rho_{Al} = 2,700~kg/m^3$, radio exterior $R_e = 0.2~m$, espesor $e = 0.01m$) flota en agua. ¿Es posible? Calcule la fracción sumergida.</p>
+                <div class="hint">Hint: Calcular la masa de la esfera hueca y verificar si es menor que la masa del agua desplazada.</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 2</h4>
+                <p>Un pontón cilíndrico ($D = 2m$, $L = 8m$) flota en un estanque. Determine su estabilidad y centro de carena en función del peso específico del fluido.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC6E2.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+            </div>
+             
+            <div class="ejercicio">
+                <h4>Problema 3</h4>
+                <p>La barcaza de 3 m de ancho que se muestra en la figura pesa 20 kN vacía. Está propuesto que lleve una carga de 250 kN. Prediga el calado en:
+                 (a) Agua dulce
+                 (b) Agua salada (S = 1.03) </p>
+                  <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC6E3.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 4</h4>
+                <p>La barcaza que se muestra en la figura se carga en forma tal que su centro de gravedad y la carga están en la línea de flotación. ¿Es estable la barcaza?</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC6E4.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 5</h4>
+                <p>La barcaza que se muestra en la figura, cargada simétricamente, ¿es estable? El centro de gravedad de la barcaza y la carga están localizados como se muestra.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC6E5.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+
+
+        </section>
+
+        <section class="clase-section" id="clase7">
+            <h3>Clase 7: Distribución de Fuerzas en Sistemas Acelerados</h3>
+
+            <div class="ejercicio">
+                <h4>Problema 1</h4>
+                <p>Un recipiente rectangular ($L = 0.8~m$, $h_0 = 0.5~m$) con agua se acelera horizontalmente con $a_x = 5~m/s^2$. Calcule: <br>
+                (a) el ángulo de la superficie libre.<br>
+                (b) los niveles en ambos extremos.<br>
+                (c) si se desborda o queda espacio libre.</p>
+                <div class="respuesta">Resp.: $\tan \theta = 0.51$ ; $\Delta h/2 = 0.204~m$ ; nivel trasero 0.704 m, delantero 0.296 m</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 2</h4>
+                <p>Un ascensor desciende con $a_z = -3~m/s^2$ (desaceleración al bajar). El recipiente tiene profundidad $h = 0.3m$. Calcule la presión en el fondo y compárela con el reposo.</p>
+                <div class="respuesta">Resp.: $g_{ef} = 6.81~m/s^2$ ; $P = 2,037~Pa$ vs 2,935 Pa en reposo</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 3</h4>
+                <p>Una centrifugadora ($R = 0.1m$, $\omega = 200~rad/s$) contiene aceite ($\rho = 850~kg/m^3$). Calcule: <br>
+                (a) la diferencia de altura del perfil parabólico.<br>
+                (b) la presión en el fondo en $r = R$ si el nivel medio es $z_0 = 0.05~m$.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC7E3.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="respuesta">Resp.: (a) $\Delta z = 20.3~m$</div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 4</h4>
+                <p>Para el cilindro que se wastra en la figura, determine la presión en el punto A para una velocidad
+                 rotacional de:
+                 (a)	5 rad/s
+                 (b)	 7 rad/s
+                 (c)	10 rad/s
+                 (d)	20 rad/s
+                 </p>
+                 <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC7E4.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 5</h4>
+                <p>El tanque del problema está lleno de agua y se acelera. Encuentre la presión en A si:
+                   (a) a =20 m/s2, L = 1 m
+                   (b) a = 10 m/s2, L = 1.5 m
+                   (c) a = 60 ft/s2, L = 3 ft
+                   (d) a = 30 ft/s2, L = 4 ft
+                  </p>
+                  <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC7E5.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+
+            <div class="ejercicio">
+                <h4>Problema 6</h4>
+                <p>El tanque que se ilustra en la figura se acelera a la derecha a 10 m/s2. Encuentre:
+                   (a) PA
+                   (b) PB
+                   (c) Pc
+                 </p>
+                 <div style="text-align: center; margin: 20px 0;">
+                  <img src="imgC7E6.png" alt="Diagrama del problema" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.3);" loading="lazy">
+                 </div>
+                <div class="hint">Hint: </div>
+                <div class="respuesta">Resp.: </div>
+            </div>
+            
+        </section>
+        
+        <div style="text-align: center;">
+            <a href="unidad1.html" class="boton-volver">← Volver al Menú de Unidad 1</a>
+        </div>
+    </div>
+
+    <script>
+    function toggleMenu() {
+        document.getElementById("menu-lateral").classList.toggle("abierto");
+    }
+    function toggleAccordion(id) {
+        var panel = document.getElementById(id);
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+</script>
+</body>    
+</html>

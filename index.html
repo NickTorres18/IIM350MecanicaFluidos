@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Mecánica de Fluidos</title>
+    <style>
+        /* Estilos Globales y Fondo con Tuberías */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #031c36; /* Azul industrial oscuro */
+            color: #ecf0f1;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(rgba(3, 28, 54, 0.9), rgba(3, 28, 54, 0.95)),
+                repeating-linear-gradient(45deg, #042548 0px, #042548 2px, transparent 2px, transparent 10px),
+                repeating-linear-gradient(-45deg, #042548 0px, #042548 2px, transparent 2px, transparent 10px);
+            background-attachment: fixed;
+        }
+
+        /* Encabezado */
+        header {
+            text-align: center;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        header h1 {
+            font-size: 3em;
+            color: #00d2ff;
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.7);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            color: #8fa3b4;
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        /* Contenedor de Unidades */
+        .contenedor-unidades {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        /* Estilo Base de la Tarjeta de Unidad */
+        .unidad-dial {
+            background: rgba(4, 37, 72, 0.6);
+            border: 2px solid rgba(0, 210, 255, 0.3);
+            border-radius: 20px;
+            width: 320px;
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            box-sizing: border-box;
+        }
+
+        .unidad-dial:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .unidad-dial h2 {
+            font-size: 1.8em;
+            margin: 0;
+            color: #ecf0f1;
+        }
+
+        /* El Contenedor Circular Modular */
+        .dial-circulo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 8px solid #1a365d;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
+            overflow: hidden; 
+            background: #021122;
+        }
+
+        /* ==========================================================================
+           ANIMACIONES UNIDAD 1: PROPIEDADES (Viscosidad / Gota Cohesiva - CIAN)
+           ========================================================================== */
+        #unidad1 { border-color: rgba(0, 210, 255, 0.4); }
+        #unidad1 h2 { color: #00d2ff; }
+        #unidad1:hover { box-shadow: 0 15px 45px rgba(0, 210, 255, 0.3); }
+
+        #unidad1 .fluido-base {
+            position: absolute; bottom: 0; width: 100%; height: 45%;
+            background: rgba(0, 210, 255, 0.4); border-top: 2px solid #00d2ff;
+        }
+
+        .gota-propiedades {
+            position: absolute; width: 14px; height: 14px; background: #00d2ff;
+            border-radius: 0 50% 50% 50%; transform: rotate(45deg);
+            left: 46%; top: -20px; box-shadow: 0 0 10px #00d2ff;
+            animation: caidaViscosa 4s infinite cubic-bezier(0.4, 0, 1, 1);
+        }
+
+        @keyframes caidaViscosa {
+            0% { top: 10%; transform: rotate(45deg) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            40% { top: 55%; transform: rotate(45deg) scale(1); }
+            70% { top: 85%; transform: rotate(45deg) scale(0.8); opacity: 0.8; }
+            100% { top: 85%; transform: rotate(45deg) scale(0); opacity: 0; }
+        }
+
+        .onda-fluido {
+            position: absolute; top: 55%; left: 50%; width: 0px; height: 0px;
+            border: 2px solid rgba(0, 210, 255, 0.8); border-radius: 50%;
+            transform: translate(-50%, -50%); animation: ondaImpacto 4s infinite;
+        }
+
+        @keyframes ondaImpacto {
+            0%, 38% { width: 0; height: 0; opacity: 0; }
+            42% { opacity: 1; }
+            60% { width: 80px; height: 20px; opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* ==========================================================================
+           ANIMACIONES UNIDAD 2: HIDROSTÁTICA (Equilibrio / Empuje Boyante - VERDE)
+           ========================================================================== */
+        #unidad2 { border-color: rgba(0, 210, 255, 0.4); }
+        #unidad2 h2 { color: #00d2ff; }
+        #unidad2:hover { box-shadow: 0 15px 45px rgba(0, 210, 255, 0.4); }
+
+        #unidad2 .fluido-base {
+            position: absolute; bottom: 0; width: 100%; height: 60%;
+            background: rgba(0, 210, 255, 0.4); border-top: 2px solid #021122;
+        }
+
+        .cuerpo-flotante {
+            position: absolute; width: 44px; height: 44px;
+            background: rgba(0, 210, 255, 0.4); border: 2px solid #021122;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+            left: 37%; top: 28%; border-radius: 6px;
+            animation: flotacionEstatica 3.5s ease-in-out infinite;
+        }
+
+        @keyframes flotacionEstatica {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(8px) rotate(1deg); }
+        }
+
+        .linea-presion {
+            position: absolute; width: 80%; left: 10%;
+            border-bottom: 1px dashed rgba(0, 210, 255, 0.4);
+        }
+        .p1 { bottom: 15%; }
+        .p2 { bottom: 35%; }
+
+        /* ==========================================================================
+           ANIMACIONES UNIDAD 3: HIDRODINÁMICA (Flujo en Movimiento - AZUL)
+           ========================================================================== */
+        #unidad3 { border-color: rgba(0, 210, 255, 0.4); }
+        #unidad3 h2 { color: #00d2ff; }
+        #unidad3:hover { box-shadow: 0 15px 45px rgba(0, 210, 255, 0.4); }
+
+        .linea-flujo {
+            position: absolute; left: -100%; width: 200%; height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.4), transparent);
+            animation: flujoCorriente 1.5s linear infinite;
+        }
+        .lf1 { top: 25%; animation-duration: 1.2s; }
+        .lf2 { top: 50%; animation-duration: 1.8s; animation-delay: 0.3s; }
+        .lf3 { top: 75%; animation-duration: 1.4s; animation-delay: 0.6s; }
+
+        @keyframes flujoCorriente {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+
+        .particula-flujo {
+            position: absolute; width: 6px; height: 6px;
+            background: #00d2ff; border-radius: 50%;
+            box-shadow: 0 0 8px #00d2ff;
+            animation: particulaVeloz 1s linear infinite;
+        }
+        .pf1 { top: 35%; left: -10%; animation-delay: 0s; }
+        .pf2 { top: 60%; left: -10%; animation-delay: 0.4s; animation-duration: 1.3s; }
+        .pf3 { top: 15%; left: -10%; animation-delay: 0.7s; animation-duration: 0.9s; }
+
+        @keyframes particulaVeloz {
+            0% { left: -10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 110%; opacity: 0; }
+        }
+
+        /* Descripciones de cada bloque */
+        .descripcion {
+            text-align: center; font-size: 1.1em; color: #b3bdc6;
+            margin: 10px 0; line-height: 1.4;
+        }
+
+        /* Botones de Acción (Transparente por defecto, se pintan al hacer hover) */
+        .boton-entrar {
+            background-color: transparent; border: 2px solid; padding: 12px 30px;
+            font-size: 1.1em; font-weight: bold; border-radius: 30px; cursor: pointer;
+            transition: all 0.3s ease; width: 85%; box-sizing: border-box;
+        }
+
+        #unidad1 .boton-entrar { border-color: #00d2ff; color: #00d2ff; }
+        #unidad2 .boton-entrar { border-color: #00d2ff; color: #00d2ff; }
+        #unidad3 .boton-entrar { border-color: #00d2ff; color: #00d2ff; }
+
+        /* Efectos Hover */
+        #unidad1:hover .boton-entrar { background-color: #00d2ff; color: #021122; box-shadow: 0 0 15px #00d2ff; }
+        #unidad2:hover .boton-entrar { background-color: #00d2ff; color: #021122; box-shadow: 0 0 15px #00d2ff; }
+        #unidad3:hover .boton-entrar { background-color: #00d2ff; color: #021122; box-shadow: 0 0 15px #00d2ff; }
+
+        .unidad-dial:hover .boton-entrar {
+            transform: scale(1.05);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mecánica de Fluidos</h1>
+        <p>Seleccione una unidad para empezar a estudiar</p>
+    </header>
+
+    <main class="contenedor-unidades">
+
+        <a href="unidad1.html" class="unidad-dial" id="unidad1">
+            <h2>Unidad 1</h2>
+            <div class="dial-circulo">
+                <div class="fluido-base"></div>
+                <div class="gota-propiedades"></div>
+                <div class="onda-fluido"></div>
+            </div>
+            <p class="descripcion">Propiedades Fundamentales e Hidrostática</p>
+            <button class="boton-entrar">Entrar a Unidad 1</button>
+        </a>
+
+        <a href="unidad2.html" class="unidad-dial" id="unidad2">
+            <h2>Unidad 2</h2>
+            <div class="dial-circulo">
+                <div class="fluido-base"></div>
+                <div class="cuerpo-flotante"></div>
+                <div class="linea-presion p1"></div>
+                <div class="linea-presion p2"></div>
+            </div>
+            <p class="descripcion">Hidrodinámica Teórica</p>
+            <button class="boton-entrar">Entrar a Unidad 2</button>
+        </a>
+
+        <a href="unidad3.html" class="unidad-dial" id="unidad3">
+            <h2>Unidad 3</h2>
+            <div class="dial-circulo">
+                <div class="linea-flujo lf1"></div>
+                <div class="linea-flujo lf2"></div>
+                <div class="linea-flujo lf3"></div>
+                <div class="particula-flujo pf1"></div>
+                <div class="particula-flujo pf2"></div>
+                <div class="particula-flujo pf3"></div>
+            </div>
+            <p class="descripcion">Hidrodinámica Práctica</p>
+            <button class="boton-entrar">Entrar a Unidad 3</button>
+        </a>
+
+    </main>
+
+</body>
+</html>

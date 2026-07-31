@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: #021223; overflow: hidden; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  draw(canvas.width, canvas.height);
+}
+
+function arrowHead(ctx, x2, y2, angle, headLen, color) {
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - headLen * Math.cos(angle - 0.38), y2 - headLen * Math.sin(angle - 0.38));
+  ctx.lineTo(x2 - headLen * Math.cos(angle + 0.38), y2 - headLen * Math.sin(angle + 0.38));
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawSmoothCurve(ctx, pts, color, lw) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lw;
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length - 2; i++) {
+    const mx = (pts[i][0] + pts[i+1][0]) / 2;
+    const my = (pts[i][1] + pts[i+1][1]) / 2;
+    ctx.quadraticCurveTo(pts[i][0], pts[i][1], mx, my);
+  }
+  ctx.quadraticCurveTo(pts[pts.length-2][0], pts[pts.length-2][1], pts[pts.length-1][0], pts[pts.length-1][1]);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function draw(W, H) {
+  ctx.clearRect(0, 0, W, H);
+  const fontSize = Math.max(11, W * 0.030);
+
+  const ox = W * 0.12;
+  const oy = H * 0.82;
+  const axW = W * 0.72;
+  const axH = H * 0.68;
+  const lw = Math.max(2, W * 0.004);
+
+  // μ∞ levels (upper = Reopético, lower = Tixotrópico)
+  const muHighY = oy - axH * 0.78;  // μ∞ superior (Reopético)
+  const muLowY  = oy - axH * 0.27;  // μ∞ inferior (Tixotrópico)
+  const muNewY  = oy - axH * 0.52;  // Newtoniano referencia (medio)
+
+  // starting point (ambas curvas comienzan en el mismo μ inicial = newtoniano)
+  const startX = ox;
+  const startY = muNewY;
+
+  // ── EJES ──
+  ctx.strokeStyle = '#ecf0f1';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + axW + 20, oy); ctx.stroke();
+  arrowHead(ctx, ox + axW + 20, oy, 0, 10, '#ecf0f1');
+  ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox, oy - axH - 20); ctx.stroke();
+  arrowHead(ctx, ox, oy - axH - 20, -Math.PI/2, 10, '#ecf0f1');
+
+  // axis labels
+  ctx.fillStyle = '#ecf0f1';
+  ctx.font = `italic ${fontSize * 1.1}px 'Segoe UI', sans-serif`;
+  ctx.fillText('μ [Pa·s]', ox + 6, oy - axH - 8);
+  ctx.font = `italic ${fontSize}px 'Segoe UI', sans-serif`;
+  ctx.fillText('t [s]', ox + axW + 8, oy + fontSize * 0.5);
+  // 0 en origen
+  ctx.fillStyle = '#8fa3b4';
+  ctx.font = `${fontSize}px 'Segoe UI', sans-serif`;
+  ctx.fillText('0', ox - fontSize * 0.9, oy + fontSize * 1.2);
+
+  // ── LÍNEAS PUNTEADAS μ∞ ──
+  ctx.setLineDash([6, 5]);
+  ctx.lineWidth = 1.2;
+  // μ∞ superior
+  ctx.strokeStyle = '#1d4ed8';
+  ctx.beginPath(); ctx.moveTo(ox, muHighY); ctx.lineTo(ox + axW * 0.88, muHighY); ctx.stroke();
+  // μ∞ inferior
+  ctx.strokeStyle = '#991b1b';
+  ctx.beginPath(); ctx.moveTo(ox, muLowY); ctx.lineTo(ox + axW * 0.88, muLowY); ctx.stroke();
+  // Newtoniano ref
+  ctx.strokeStyle = '#6b7280';
+  ctx.beginPath(); ctx.moveTo(ox, muNewY); ctx.lineTo(ox + axW * 0.88, muNewY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // labels μ∞
+  ctx.fillStyle = '#1d4ed8';
+  ctx.font = `italic ${fontSize * 0.95}px 'Segoe UI', sans-serif`;
+  ctx.fillText('μ∞', ox - fontSize * 2.0, muHighY + fontSize * 0.4);
+  ctx.fillStyle = '#991b1b';
+  ctx.fillText('μ∞', ox - fontSize * 2.0, muLowY + fontSize * 0.4);
+  ctx.fillStyle = '#6b7280';
+  ctx.font = `${fontSize * 0.85}px 'Segoe UI', sans-serif`;
+  ctx.fillText('Newtoniano (ref.)', ox + axW * 0.55, muNewY - fontSize * 0.5);
+
+  // ── REOPÉTICO (azul oscuro — sube del startY hasta muHighY) ──
+  const reoEndX = ox + axW * 0.78;
+  const reoPts = [
+    [startX, startY],
+    [startX + axW * 0.08, startY - axH * 0.06],
+    [startX + axW * 0.18, startY - axH * 0.16],
+    [startX + axW * 0.32, startY - axH * 0.28],
+    [startX + axW * 0.48, startY - axH * 0.36],
+    [startX + axW * 0.62, startY - axH * 0.40],
+    [reoEndX, muHighY]
+  ];
+  drawSmoothCurve(ctx, reoPts, '#1d4ed8', lw * 1.5);
+  // label Reopético
+  ctx.fillStyle = '#1d4ed8';
+  ctx.font = `bold ${fontSize}px 'Segoe UI', sans-serif`;
+  ctx.fillText('Reopético', reoEndX + 8, muHighY + fontSize * 0.4);
+
+  // ── TIXOTRÓPICO (rojo oscuro — baja del startY hasta muLowY) ──
+  const tixoPts = [
+    [startX, startY],
+    [startX + axW * 0.08, startY + axH * 0.06],
+    [startX + axW * 0.18, startY + axH * 0.14],
+    [startX + axW * 0.32, startY + axH * 0.20],
+    [startX + axW * 0.48, startY + axH * 0.23],
+    [startX + axW * 0.62, startY + axH * 0.24],
+    [reoEndX, muLowY]
+  ];
+  drawSmoothCurve(ctx, tixoPts, '#991b1b', lw * 1.5);
+  // label Tixotrópico
+  ctx.fillStyle = '#991b1b';
+  ctx.font = `bold ${fontSize}px 'Segoe UI', sans-serif`;
+  ctx.fillText('Tixotrópico', reoEndX + 8, muLowY + fontSize * 0.4);
+
+  // ── NOTA INFERIOR ──
+  ctx.fillStyle = '#8fa3b4';
+  ctx.font = `italic ${fontSize * 0.82}px 'Segoe UI', sans-serif`;
+  ctx.fillText('γ̇ = cte (cizallamiento constante aplicado desde t = 0)', ox, H * 0.96);
+}
+
+window.addEventListener('resize', resize);
+resize();
+</script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor de Teoría</title>
+    <style>
+        :root { --color-acento: #00d2ff; --color-sombra: rgba(0, 210, 255, 0.3); --bg-especifico: radial-gradient(rgba(0, 210, 255, 0.1) 20%, transparent 20%), radial-gradient(rgba(0, 210, 255, 0.05) 20%, transparent 20%); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #021223; color: #ecf0f1; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 30px 0; box-sizing: border-box; background-image: var(--bg-especifico); background-position: 0 0, 50px 50px; background-size: 100px 100px; }
+        .contenedor-visor { background: rgba(4, 37, 72, 0.4); border: 2px solid var(--color-acento); border-radius: 20px; padding: 40px; box-shadow: 0 0 30px var(--color-sombra); max-width: 800px; width: 90%; box-sizing: border-box; }
+        h1 { font-size: 2.5em; color: var(--color-acento); margin: 0 0 5px 0; text-shadow: 0 0 10px var(--color-sombra); }
+        .meta-info { color: #8fa3b4; font-size: 1.1em; margin-bottom: 30px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .contenido-teoria { font-size: 1.15em; line-height: 1.7; color: #ecf0f1; text-align: justify; margin-bottom: 40px; }
+        .contenido-teoria p { margin: 0 0 16px 0; }
+        .contenido-teoria ul { margin: 0 0 16px 20px; }
+        .contenido-teoria li { margin-bottom: 8px; }
+        .contenido-teoria h2 { font-size: 1.2em; margin: 24px 0 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; }
+        .contenido-teoria table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.93em; }
+        .contenido-teoria svg { border-radius: 8px; }
+        .contenido-teoria b { color: #ecf0f1; }
+        .caja-formula { background: rgba(0,0,0,0.3); border-left: 4px solid var(--color-acento); padding: 15px; margin: 20px 0; font-family: 'Times New Roman', Times, serif; font-style: italic; font-size: 1.3em; text-align: center; }
+        .boton-volver { display: inline-flex; align-items: center; gap: 12px; background-color: #2c3e50; color: #ecf0f1; border: 2px solid var(--color-acento); padding: 12px 28px; font-size: 1.05em; font-weight: bold; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .boton-volver:hover { background-color: var(--color-acento); color: #021223; box-shadow: 0 0 20px var(--color-sombra); transform: scale(1.02); }
+
+        /* Estilos del Menú Lateral Jerárquico Acordeón */
+        .menu-btn { position: fixed; top: 20px; left: 20px; background: rgba(4, 37, 72, 0.8); color: #00d2ff; border: 2px solid #00d2ff; padding: 10px 15px; border-radius: 8px; cursor: pointer; z-index: 1000; font-weight: bold; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        .menu-btn:hover { background: #00d2ff; color: #021223; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
+        .menu-lateral { height: 100%; width: 280px; position: fixed; z-index: 1001; top: 0; left: -280px; background-color: #010e1d; border-right: 2px solid #00d2ff; overflow-y: auto; overflow-x: hidden; transition: left 0.3s ease; padding-top: 50px; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+        .menu-lateral.abierto { left: 0; }
+        .menu-inicio { padding: 15px 20px; font-weight: bold; color: #00d2ff; font-size: 1.1em; border-bottom: 1px solid rgba(0, 210, 255, 0.1); display: block; text-decoration: none; transition: 0.2s; }
+        .menu-inicio:hover { background: rgba(0, 210, 255, 0.05); }
+        .menu-lateral .cerrar-btn { position: absolute; top: 10px; right: 15px; font-size: 30px; padding: 0; border: none; background: none; color: #e74c3c; cursor: pointer; }
+        .menu-lateral .cerrar-btn:hover { color: #ff7675; }
+        .menu-lateral::-webkit-scrollbar { width: 6px; }
+        .menu-lateral::-webkit-scrollbar-thumb { background: #00d2ff; border-radius: 10px; }
+        
+        /* Acordeón */
+        .menu-btn-acordeon { background-color: transparent; color: #ecf0f1; cursor: pointer; padding: 15px 20px; width: 100%; text-align: left; border: none; outline: none; transition: 0.3s; font-size: 1.1em; font-weight: bold; font-family: inherit; border-bottom: 1px solid rgba(0,210,255,0.1); display: block; }
+        .menu-btn-acordeon:hover, .menu-btn-acordeon.active { background-color: rgba(0, 210, 255, 0.05); color: #00d2ff; }
+        .sub-acordeon { padding-left: 30px; font-size: 1em; color: #b3bdc6; font-weight: normal; border-bottom: none; }
+        .sub-acordeon:hover, .sub-acordeon.active { border-left: 3px solid #00d2ff; padding-left: 27px; }
+        .menu-panel { padding: 0; background-color: #010a15; display: none; overflow: hidden; }
+        .menu-panel a { padding: 8px 15px 8px 45px; text-decoration: none; font-size: 0.95em; color: #8fa3b4; display: block; transition: 0.2s; border-left: 1px solid rgba(0,210,255,0.2); }
+        .menu-panel a:hover { color: #00d2ff; background-color: rgba(0,210,255,0.05); padding-left: 55px; border-left: 2px solid #00d2ff; }
+    </style>
+
+    <script>
+      window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <a href="javascript:history.back()" class="boton-volver" style="padding: 6px 12px; font-size: 12px; min-width: auto; margin: 0; text-align: center; line-height: 1.4; display: inline-block;">
+        ⬅ Volver a la <br> página anterior
+    </a>
+     </div>
+<div class="menu-btn" onclick="toggleMenu()">☰ Menú</div>
+    <nav id="menu-lateral" class="menu-lateral">
+        <button class="cerrar-btn" onclick="toggleMenu()">&times;</button>
+        <a href="index.html" class="menu-inicio">🏠 Inicio (Panel)</a>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u1')">📘 Unidad 1</button>
+        <div id="u1" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-teo')">📖 Teoría</button>
+            <div id="u1-teo" class="menu-panel">
+                <a href="visor.html?unidad=1&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=1&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=1&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=1&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=1&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=1&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=1&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-eje')">📝 Ejemplos</button>
+            <div id="u1-eje" class="menu-panel">
+                <a href="ejercicio1.html#ejemplos-clase1">• Clase 1</a>
+                <a href="ejercicio1.html#ejemplos-clase2">• Clase 2</a>
+                <a href="ejercicio1.html#ejemplos-clase3">• Clase 3</a>
+                <a href="ejercicio1.html#ejemplos-clase4">• Clase 4</a>
+                <a href="ejercicio1.html#ejemplos-clase5">• Clase 5</a>
+                <a href="ejercicio1.html#ejemplos-clase6">• Clase 6</a>
+                <a href="ejercicio1.html#ejemplos-clase7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-pro')">⚙️ Problemas</button>
+           <div id="u1-pro" class="menu-panel">
+                <a href="ejercicios_propuestos1.html.html#clase1">• Clase 1</a>
+             <a href="ejercicios_propuestos1.html.html#clase2">• Clase 2</a>
+              <a href="ejercicios_propuestos1.html.html#clase3">• Clase 3</a>
+              <a href="ejercicios_propuestos1.html.html#clase4">• Clase 4</a>
+             <a href="ejercicios_propuestos1.html.html#clase5">• Clase 5</a>
+              <a href="ejercicios_propuestos1.html.html#clase6">• Clase 6</a>
+             <a href="ejercicios_propuestos1.html.html#clase7">• Clase 7</a>
+              </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u2')">📗 Unidad 2</button>
+        <div id="u2" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-teo')">📖 Teoría</button>
+            <div id="u2-teo" class="menu-panel">
+                <a href="visor.html?unidad=2&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=2&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=2&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=2&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=2&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=2&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=2&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-eje')">📝 Ejemplos</button>
+            <div id="u2-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-pro')">⚙️ Problemas</button>
+            <div id="u2-pro" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u3')">📕 Unidad 3</button>
+        <div id="u3" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-teo')">📖 Teoría</button>
+            <div id="u3-teo" class="menu-panel">
+                <a href="visor.html?unidad=3&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=3&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=3&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=3&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=3&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=3&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=3&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-eje')">📝 Ejemplos</button>
+            <div id="u3-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+           <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-pro')">⚙️ Problemas</button>
+<div id="u3-pro" class="menu-panel">
+    <a href="#">• Clase 1</a>
+    <a href="#">• Clase 2</a>
+    <a href="#">• Clase 3</a>
+    <a href="#">• Clase 4</a>
+    <a href="#">• Clase 5</a>
+    <a href="#">• Clase 6</a>
+    <a href="#">• Clase 7</a>
+</div>
+        </div>
+    </nav>
+
+    <div class="contenedor-visor">
+        <div class="meta-info" id="unidad-label">Cargando Unidad...</div>
+        <h1 id="titulo-tema">Cargando Tema...</h1>
+        
+        <div class="contenido-teoria" id="cuerpo-tema">
+            Cargando contenido científico...
+        </div>
+        
+        <a id="link-regreso" href="#" class="boton-volver">
+            Volver a los Temas
+        </a>
+    </div>
+
+    <script src="datos.js"></script>
+
+    <script>
+        function toggleMenu() { document.getElementById("menu-lateral").classList.toggle("abierto"); }
+        function toggleAccordion(id) {
+            var panel = document.getElementById(id);
+            if (panel.style.display === "block") { panel.style.display = "none"; } 
+            else { panel.style.display = "block"; }
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const numUnidad = urlParams.get('unidad');
+        const numTema = urlParams.get('tema');
+        const idUnidad = "unidad" + numUnidad;
+        const idTema = "tema" + numTema;
+
+        if (numUnidad === "2") {
+            document.documentElement.style.setProperty('--color-acento', '#2ecc71');
+            document.documentElement.style.setProperty('--color-sombra', 'rgba(46, 204, 113, 0.3)');
+            document.documentElement.style.setProperty('--bg-especifico', 'radial-gradient(rgba(46, 204, 113, 0.1) 20%, transparent 20%), radial-gradient(rgba(46, 204, 113, 0.05) 20%, transparent 20%)');
+        } else if (numUnidad === "3") {
+            document.body.style.backgroundColor = "#010c1a";
+            document.documentElement.style.setProperty('--color-acento', '#3498db');
+            document.documentElement.style.setProperty('--color-sombra', 'rgba(52, 152, 219, 0.3)');
+            document.documentElement.style.setProperty('--bg-especifico', 'repeating-linear-gradient(rgba(52, 152, 219, 0.03) 0px, rgba(52, 152, 219, 0.03) 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, rgba(52, 152, 219, 0.03) 0px, rgba(52, 152, 219, 0.03) 1px, transparent 1px, transparent 20px)');
+            document.body.style.backgroundSize = "cover";
+        }
+
+        document.getElementById("link-regreso").href = "teoria" + numUnidad + ".html";
+        document.getElementById("unidad-label").innerText = "Mecánica de Fluidos — Unidad " + numUnidad;
+
+        try {
+            const dataObtenida = baseDatosTeoria[idUnidad][idTema];
+            if (dataObtenida) {
+                document.getElementById("titulo-tema").innerText = dataObtenida.titulo;
+                document.getElementById("cuerpo-tema").innerHTML = dataObtenida.contenido;
+                
+                if (typeof MathJax !== 'undefined' && typeof MathJax.typesetPromise === 'function') {
+                    MathJax.typesetPromise();
+                }
+            } else {
+                throw new Error("Tema no encontrado");
+            }
+        } catch (e) {
+            console.error("Error cargando el tema:", e);
+            document.getElementById("titulo-tema").innerText = "Contenido No Encontrado";
+            document.getElementById("cuerpo-tema").innerHTML = "<p>El tema solicitado se encuentra en desarrollo o no existe.</p>";
+        }
+    </script>
+</body>
+</html>

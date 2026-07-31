@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 3 - Temas de Teoría</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #021223; color: #ecf0f1; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px 0; background-image: radial-gradient(rgba(0, 210, 255, 0.1) 20%, transparent 20%), radial-gradient(rgba(0, 210, 255, 0.05) 20%, transparent 20%); background-position: 0 0, 50px 50px; background-size: 100px 100px; }
+        .contenedor-bienvenida { text-align: center; background: rgba(0, 210, 255, 0.05); border: 2px solid rgba(0, 210, 255, 0.4); border-radius: 20px; padding: 40px; box-shadow: 0 0 30px rgba(0, 210, 255, 0.2); max-width: 800px; width: 90%; }
+        h1 { font-size: 2.5em; color: #00d2ff; text-shadow: 0 0 15px rgba(0, 210, 255, 0.5); margin-bottom: 5px; }
+        h2 { color: #ecf0f1; font-weight: 300; margin-bottom: 30px; }
+        .grid-temas { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 40px; }
+        .boton-tema { background: rgba(2, 18, 35, 0.8); color: #00d2ff; border: 1px solid #00d2ff; padding: 15px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; width: calc(33.333% - 20px); box-sizing: border-box; transition: all 0.3s; }
+        .boton-tema:hover { background: #00d2ff; color: #021223; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4); }
+        .boton-volver { display: inline-flex; align-items: center; gap: 10px; background: #2c3e50; color: #fff; border: 2px solid #00d2ff; padding: 10px 25px; border-radius: 35px; text-decoration: none; font-weight: bold; }
+        .boton-volver:hover { background: #00d2ff; color: #021223; }
+        @media (max-width: 600px) { .boton-tema { width: calc(50% - 6px); } }
+
+        /* Estilos del Menú Lateral Jerárquico Acordeón */
+        .menu-btn { position: fixed; top: 20px; left: 20px; background: rgba(4, 37, 72, 0.8); color: #00d2ff; border: 2px solid #00d2ff; padding: 10px 15px; border-radius: 8px; cursor: pointer; z-index: 1000; font-weight: bold; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        .menu-btn:hover { background: #00d2ff; color: #021223; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
+        .menu-lateral { height: 100%; width: 280px; position: fixed; z-index: 1001; top: 0; left: -280px; background-color: #010e1d; border-right: 2px solid #00d2ff; overflow-y: auto; overflow-x: hidden; transition: left 0.3s ease; padding-top: 50px; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+        .menu-lateral.abierto { left: 0; }
+        .menu-inicio { padding: 15px 20px; font-weight: bold; color: #00d2ff; font-size: 1.1em; border-bottom: 1px solid rgba(0, 210, 255, 0.1); display: block; text-decoration: none; transition: 0.2s; }
+        .menu-inicio:hover { background: rgba(0, 210, 255, 0.05); }
+        .menu-lateral .cerrar-btn { position: absolute; top: 10px; right: 15px; font-size: 30px; padding: 0; border: none; background: none; color: #e74c3c; cursor: pointer; }
+        .menu-lateral .cerrar-btn:hover { color: #ff7675; }
+        .menu-lateral::-webkit-scrollbar { width: 6px; }
+        .menu-lateral::-webkit-scrollbar-thumb { background: #00d2ff; border-radius: 10px; }
+        
+        /* Acordeón */
+        .menu-btn-acordeon { background-color: transparent; color: #ecf0f1; cursor: pointer; padding: 15px 20px; width: 100%; text-align: left; border: none; outline: none; transition: 0.3s; font-size: 1.1em; font-weight: bold; font-family: inherit; border-bottom: 1px solid rgba(0,210,255,0.1); display: block; }
+        .menu-btn-acordeon:hover, .menu-btn-acordeon.active { background-color: rgba(0, 210, 255, 0.05); color: #00d2ff; }
+        .sub-acordeon { padding-left: 30px; font-size: 1em; color: #b3bdc6; font-weight: normal; border-bottom: none; }
+        .sub-acordeon:hover, .sub-acordeon.active { border-left: 3px solid #00d2ff; padding-left: 27px; }
+        .menu-panel { padding: 0; background-color: #010a15; display: none; overflow: hidden; }
+        .menu-panel a { padding: 8px 15px 8px 45px; text-decoration: none; font-size: 0.95em; color: #8fa3b4; display: block; transition: 0.2s; border-left: 1px solid rgba(0,210,255,0.2); }
+        .menu-panel a:hover { color: #00d2ff; background-color: rgba(0,210,255,0.05); padding-left: 55px; border-left: 2px solid #00d2ff; }
+    </style>
+</head>
+<body>
+
+    <div class="menu-btn" onclick="toggleMenu()">☰ Menú</div>
+    <nav id="menu-lateral" class="menu-lateral">
+        <button class="cerrar-btn" onclick="toggleMenu()">&times;</button>
+        <a href="index.html" class="menu-inicio">🏠 Inicio (Panel)</a>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u1')">📘 Unidad 1</button>
+        <div id="u1" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-teo')">📖 Teoría</button>
+            <div id="u1-teo" class="menu-panel">
+                <a href="visor.html?unidad=1&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=1&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=1&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=1&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=1&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=1&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=1&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-eje')">📝 Ejemplos</button>
+            <div id="u1-eje" class="menu-panel">
+                <a href="ejercicio1.html#ejemplos-clase1">• Clase 1</a>
+                <a href="ejercicio1.html#ejemplos-clase2">• Clase 2</a>
+                <a href="ejercicio1.html#ejemplos-clase3">• Clase 3</a>
+                <a href="ejercicio1.html#ejemplos-clase4">• Clase 4</a>
+                <a href="ejercicio1.html#ejemplos-clase5">• Clase 5</a>
+                <a href="ejercicio1.html#ejemplos-clase6">• Clase 6</a>
+                <a href="ejercicio1.html#ejemplos-clase7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u1-pro')">⚙️ Problemas</button>
+            <div id="u1-pro" class="menu-panel">
+                <a href="ejercicios_propuestos1.html#problemas-clase1">• Clase 1</a>
+                <a href="ejercicios_propuestos1.html#problemas-clase2">• Clase 2</a>
+                <a href="ejercicios_propuestos1.html#problemas-clase3">• Clase 3</a>
+                <a href="ejercicios_propuestos1.html#problemas-clase4">• Clase 4</a>
+                <a href="ejercicios_propuestos1.html#problemas-clase5">• Clase 5</a>
+                <a href="ejercicios_propuestos1.html#problemas-clase6">• Clase 6</a>
+                <a href="ejercicios_propuestos1.html#problemas-clase7">• Clase 7</a>
+            </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u2')">📗 Unidad 2</button>
+        <div id="u2" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-teo')">📖 Teoría</button>
+            <div id="u2-teo" class="menu-panel">
+                <a href="visor.html?unidad=2&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=2&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=2&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=2&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=2&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=2&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=2&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-eje')">📝 Ejemplos</button>
+            <div id="u2-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u2-pro')">⚙️ Problemas</button>
+            <div id="u2-pro" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+        </div>
+
+        <button class="menu-btn-acordeon" onclick="toggleAccordion('u3')">📕 Unidad 3</button>
+        <div id="u3" class="menu-panel">
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-teo')">📖 Teoría</button>
+            <div id="u3-teo" class="menu-panel">
+                <a href="visor.html?unidad=3&tema=1">• Clase 1</a>
+                <a href="visor.html?unidad=3&tema=2">• Clase 2</a>
+                <a href="visor.html?unidad=3&tema=3">• Clase 3</a>
+                <a href="visor.html?unidad=3&tema=4">• Clase 4</a>
+                <a href="visor.html?unidad=3&tema=5">• Clase 5</a>
+                <a href="visor.html?unidad=3&tema=6">• Clase 6</a>
+                <a href="visor.html?unidad=3&tema=7">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-eje')">📝 Ejemplos</button>
+            <div id="u3-eje" class="menu-panel">
+                <a href="#">• Clase 1</a>
+                <a href="#">• Clase 2</a>
+                <a href="#">• Clase 3</a>
+                <a href="#">• Clase 4</a>
+                <a href="#">• Clase 5</a>
+                <a href="#">• Clase 6</a>
+                <a href="#">• Clase 7</a>
+            </div>
+            <button class="menu-btn-acordeon sub-acordeon" onclick="toggleAccordion('u3-pro')">⚙️ Problemas</button>
+            <div id="u3-pro" class="menu-panel">
+                <a href="ejercicios_propuestos1.html.html#clase1">• Clase 1</a>
+                <a href="ejercicios_propuestos1.html.html#clase2">• Clase 2</a>
+                <a href="ejercicios_propuestos1.html.html#clase3">• Clase 3</a>
+                <a href="ejercicios_propuestos1.html.html#clase4">• Clase 4</a>
+               <a href="ejercicios_propuestos1.html.html#clase5">• Clase 5</a>
+                <a href="ejercicios_propuestos1.html.html#clase6">• Clase 6</a>
+                 <a href="ejercicios_propuestos1.html.html#clase7">• Clase 7</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contenedor-bienvenida">
+        <h1>Unidad 3</h1>
+        <h2>Contenido Teórico Seleccionable</h2>
+        <div class="grid-temas">
+            <a href="visor.html?unidad=3&tema=1" class="boton-tema">Tema 1</a>
+            <a href="visor.html?unidad=3&tema=2" class="boton-tema">Tema 2</a>
+            <a href="visor.html?unidad=3&tema=3" class="boton-tema">Tema 3</a>
+            <a href="visor.html?unidad=3&tema=4" class="boton-tema">Tema 4</a>
+            <a href="visor.html?unidad=3&tema=5" class="boton-tema">Tema 5</a>
+            <a href="visor.html?unidad=3&tema=6" class="boton-tema">Tema 6</a>
+            <a href="visor.html?unidad=3&tema=7" class="boton-tema">Tema 7</a>
+            <a href="visor.html?unidad=3&tema=8" class="boton-tema">Tema 8</a>
+            <a href="visor.html?unidad=3&tema=9" class="boton-tema">Tema 9</a>
+            <a href="visor.html?unidad=3&tema=10" class="boton-tema">Tema 10</a>
+            <a href="visor.html?unidad=3&tema=11" class="boton-tema">Tema 11</a>
+        </div>
+        <a href="unidad3.html" class="boton-volver">Volver al Menú de Unidad</a>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu-lateral").classList.toggle("abierto");
+        }
+        function toggleAccordion(id) {
+            var panel = document.getElementById(id);
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
